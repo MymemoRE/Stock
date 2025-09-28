@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="UTF-8">
+    <title>Corp page</title>
+</head>
+<body>
+<div class="container">
+    <div>
+        <h1>{{cname}} / <a href="http://localhost:5000">UL trade result</a></h1>
+    </div>
+    <div><h4>{{corp_data[0][2]}}</h4></div>
+    <div>{% include "corp/"~cname~".html" %}</div>
+    <div><h6>Colmun 1.date 2.name 3.trade 4.price 5.commission 6.cost 7.ttm 8.jpy 9.num</h4></div>
+<div><span id="goukei"></span></div>
+<div><span id="cost"></span></div>
+    <div id="users">
+        <input class="search" placeholder="Search" />
+        <table id="tablesql">
+            <thead>
+                <tr>
+                    <th>year/day</th>
+                    <th>Code</th>
+                    <th>Sell/Buy</th>
+                    <th>price</th>
+                    <th>cost</th>
+                </tr>
+            </thead>
+            <tbody class="list">
+                {% for item in data %}
+                <tr>
+                    <th class="dat">{{item[0]}}</th>
+                    <th class="nm">{{item[1]}}</th>
+                    <th class="sell">{{item[2]}}</th>
+                    <th>{{item[3]}}</th>
+                    <th align="right">{{item[5]}}</th>
+                </tr>
+                {% endfor %}
+		<span></span>
+		
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/milligram.css') }}">
+<script src="{{ url_for('static', filename='javascript/driver.js') }}"></script>
+<script src="{{ url_for('static', filename='javascript/list.js') }}"></script>
+<script>
+    var options = {
+        valueNames: [ 'nm', 'dat', 'sell' ]
+    };
+
+  var userList = new List('users', options);
+  var tableElem=document.getElementById('tablesql');
+  var rowElem=tableElem.rows;
+  const len=rowElem.length;
+  var ww=[];
+  for (i=1; i < len; i++){
+      ww.push(Number(rowElem[i].cells[5].innerText));
+  }
+  
+  document.getElementById('goukei').innerText=len;
+
+  userList.on('searchComplete',function(a){
+  document.getElementById('goukei').innerText=userList.visibleItems.length;
+
+      var price=0;
+      for(i=0;i<len-1;i++){
+          if(userList.items[i].visible()){
+              price=price+ww[i];
+          }else{
+
+          }
+      }
+
+      document.getElementById('cost').innerText=price;
+
+
+  });
+
+</script>
+</html>

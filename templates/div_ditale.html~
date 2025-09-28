@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="UTF-8">
+    <title>div ditale</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+</head>
+<body>
+<div class="uk-container">
+    <div>
+      <font size="7">Div prediction</font><br>
+      <font size="5"><a href="{{url_for('index')}}">Result</a> / <a href="{{url_for('stock')}}">Stock</a> / <a href="{{url_for('note_page')}}">Note</a></font>
+    </div>
+
+    <div><h6>Total div amount is {{cost_sum}}</h6></div>
+    <div id="teatarea">us</div>
+    <div id="addText"></div>
+    <div id="goukei"></div>
+    <select id="SQform" onchange="inputChange()" class=\
+"uk-select">
+      <option value="update">Update</option>
+      <option value="insert">Instert</option>
+    </select>
+
+    <div id="users">
+        <input class="search" placeholder="Search" />
+        <table id="tablesql"  class="uk-table uk-table-striped">
+            <thead>
+                <tr>
+                  <th>支払日</th>
+                    <th>Code</th>
+                  <th>権利落 </th>
+                  <th>単価</th>
+		  <th>Cost</th>
+		    
+                </tr>
+            </thead>
+            <tbody class="list">
+                {% for item in exdiv %}
+                <tr>
+                    <th class="dat">{{date_li2[loop.index-1][0]}}</th>
+                    <th class="nm"><a href="{{url_for('corp', cname=date_li2[loop.index-1][1])}}">{{date_li2[loop.index-1][1]}}</a>
+		    
+                    </th>
+                    <th>{{date_li2[loop.index-1][2]}}</th>
+                    <th>{{date_li2[loop.index-1][3]}}</th>
+		    <th>{{date_li2[loop.index-1][4]}}</th>
+                   
+                </tr>
+                {% endfor %}
+		<span></span>
+		
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/css/uikit.min.css') }}">
+<script src="{{ url_for('static', filename='javascript/driver.js') }}"></script>
+<script src="{{ url_for('static', filename='javascript/list.js') }}"></script>
+<script src="{{ url_for('static', filename='javascript/uikit/uikit.min.js') }}"></script>
+<script>
+    var options = {
+        valueNames: [ 'nm', 'dat', 'sell' ]
+    };
+
+  var userList = new List('users', options);
+  var tableElem=document.getElementById('tablesql');
+  var rowElem=tableElem.rows;
+  const len=rowElem.length;
+  var ww=[];
+  for (i=1; i < len; i++){
+      ww.push(Number(rowElem[i].cells[5].innerText));
+  }
+  
+  document.getElementById('goukei').innerText=len;
+
+  userList.on('searchComplete',function(a){
+  document.getElementById('goukei').innerText=userList.visibleItems.length;
+
+      let price=0;
+      for(i=0;i<len-1;i++){
+          if(userList.items[i].visible()){
+              price=price+ww[i];
+          }else{
+
+          }
+      }
+
+      document.getElementById('cost').innerText=price;
+
+
+  });
+
+
+</script>
+</html>

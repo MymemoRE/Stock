@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">  
+    <title>Trade result</title>
+</head>
+<body>
+<div class="uk-container">
+    <div>
+      <font size="7">UL Trade Result</font><br>
+      <font size="5"><a href="{{url_for('div_ditale')}}">Div prediction</a> / <a href="{{url_for('note_page')}}">Note</a> / <a href="{{url_for('stock')}}">Stock</a> / <a href="{{url_for('sq_lite')}}">sqlite</a></font>
+    </div>
+    <form action='/result'>
+      <div uk-margin>
+	<div class="" uk-grid>
+	  <div>
+	    <button class="uk-button uk-button-default" type="submit" formmethod="POST">Run SQL</button>
+	  </div>  
+	  <div>  
+	    <select id="SQform" onchange="inputChange()" class="uk-select">
+                <option value="insert">Insert record</option>
+                <option value="update1">Update cost</option>
+		<option value="update2">Update date</option>
+            </select>
+	  </div>
+	  <div>
+	    <button class="uk-button uk-button-default" type="button" uk-toggle="target: #offcanvas-usage">Option</button>
+	    <div id="offcanvas-usage" uk-offcanvas>
+	      <div class="uk-offcanvas-bar">
+		<button class="uk-offcanvas-close" type="button" uk-close></button>
+		<h3>Run Sql assist</h3>
+		<p>Lorem ipsum dolor sit amet, consectetu
+		  adipiscing elit, sed do eiusmod</p>
+		<p>Last rowid is {{last_rowid}}</p>
+		<select id="tterm" class="uk-select" onchange="inputChange()">
+		  <option value="div">div</option>
+		  <option value="buy">buy</option>
+		  <option value="sell">sell</option>
+		</select>
+		<select id="corp" class="uk-select" onchange="inputChange()">
+		  {% for item in data_corp%}
+		  <option>{{item[0]}}</option>
+		  {% endfor %}
+		</select>
+		<input name="tnum" id="tnum" type="text" class="uk-input" value="10">
+		<input name="rnum" id="rnum" type="text" class="uk-input" value="20">
+		<input name="rate" id="rate" type="text" class="uk-input" value="145.5">
+		<div>stock num</div>
+		<input name="stock" id="stock" type="text" class="uk-input" value="1">
+	      </div>
+	    </div>
+	</div>
+      </div>
+	
+     
+      
+            <input name="name" id="SQinput" type="text" class="uk-input">
+    </form>
+   
+    <div><h6>Colmun 1.date 2.name 3.trade 4.price 5.commission 6.cost 7.ttm 8.jpy 9.num,  last rowid is {{last_rowid}}</h4></div>
+<div><span id="goukei">Last rowid is {{last_rowid}}</span></div>
+    <div id="users">
+        <input class="search" placeholder="Search" />
+        <table id="tablesql"  class="uk-table uk-table-striped">
+            <thead>
+              <tr>
+                    <th>day</th>
+                    <th>Code</th>
+                    <th>Term</th>
+                    <th>price</th>
+                    <th>cost</th>
+                </tr>
+            </thead>
+            <tbody class="list">
+                {% for item in data %}
+                <tr>
+                    <th class="dat">{{item[0]}}</th>
+                    <th class="nm"><a href="{{url_for('corp', cname=item[1])}}">{{item[1]}}</a>
+		    
+                    </th>
+                    <th class="sell">{{item[2]}}</th>
+                    <th>{{item[3]}}</th>
+                    <th>{{item[5]}}</th>
+                </tr>
+                {% endfor %}
+		<span></span>
+		
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/css/uikit.min.css') }}">
+<script src="{{ url_for('static', filename='javascript/uikit/uikit.min.js') }}"></script>
+<script src="{{ url_for('static', filename='javascript/driver.js') }}"></script>
+<script src="{{ url_for('static', filename='javascript/list.js') }}"></script>
+<script>
+  const rowid={{last_rowid}}
+    var options = {
+        valueNames: [ 'nm', 'dat', 'sell' ]
+    };
+  var userList = new List('users', options);
+
+/*
+  document.getElementById('testarea').textContent='write';
+*/
+  
+  var tableElem=document.getElementById('tablesql'); 
+  var rowElem=tableElem.rows;
+  const len=rowElem.length;
+  var ww=[];
+  var price;
+  price=0;
+  /* 
+  document.getElementById('testarea').textContent=len;
+  */
+  
+  for (i=1; i < len; i++){
+      ww.push(Number(rowElem[i].cells[4].innerText));
+  }
+  
+  document.getElementById('testarea').textContent=len + 'record';
+  
+
+  userList.on('searchComplete',function(a){      
+      price=0;
+  for(i=0;i<len-1;i++){
+          if(userList.items[i].visible()){
+              price=price+ww[i];
+          }else{
+
+          }
+  }
+      document.getElementById('testarea').textContent=Math.round(price*100)/100;    
+
+  });
+  
+  
+</script>
+</html>

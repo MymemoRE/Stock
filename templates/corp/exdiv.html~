@@ -1,0 +1,33 @@
+<div class="uk-grid-small  uk-child-width-expand@s" uk-grid>
+  <div>
+   <div class="uk-card uk-card-default uk-card-body">
+     <table id="tablesql"class="uk-table uk-table-small uk-table-striped">
+       <thead>
+	 <tr>
+	   <th>権利落</th>
+	   <th>支払</th>
+	 </tr>
+       </thead>
+       <tbody>
+
+	 {% for item in exdiv_data %}
+	 <tr>
+	   <td>{{item[1]}}</td>
+	   <td>{{item[2]}}</td>
+	 </tr>
+	 {% endfor %}
+	 
+       </tbody>
+     </table>
+     
+   </div>
+  </div>
+  <div>
+   <div class="uk-card uk-card-default uk-card-body">
+     <div>保有数:<strong>{{stock}}</strong>  &emsp; 売買収支:&nbsp;<strong>{{buysell_sum}}$</strong></div>
+     <div>総配当額:{{div_sum}}</div>
+     <div>株価 : {{last_price}}</div>
+   </div>
+  </div>
+</div>
+<span><br></span>

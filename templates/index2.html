@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="UTF-8">
+    <title>Trade result</title>
+</head>
+<body>
+<div class="container">
+    <div>
+        <h1>Trade Result</h1>
+    </div>
+    <form action='/result'>
+      <div class="row">
+	<div class="colmun colmun-30">
+	<button class="button button-outline" type="submit" formmethod="POST">Run SQL</button>
+	</div>
+	<div class="colmun colmun-10"><select id="SQform" onchange="inputChange()">
+            <option value="update">Update</option>
+            <option value="insert">Instert</option>
+        </select>
+	</div>
+      <div>
+	<input id="SQinput" name="name" type="text" style="1000px">
+      </div>
+    </div>
+    </form>
+    <div><h6>Colmun 1.date 2.name 3.trade 4.price 5.commission 6.cost 7.ttm 8.jpy 9.num</h4></div>
+    <textarea placeholder="textarea" id="textarea">
+    </textarea>
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>year/day</th>
+                    <th>Code</th>
+                    <th>Sell/Buy</th>
+                    <th>price</th>
+                    <th>cost</th>
+                    <th>TTM</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in data %}
+                <tr>
+                    <th>{{item[0]}}</th>
+                    <th>{{item[1]}}</th>
+                    <th>{{item[2]}}</th>
+                    <th>{{item[3]}}</th>
+                    <th>{{item[5]}}</th>
+                    <th>{{item[6]}}</th>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/milligram.css') }}">
+<script src="{{ url_for('static', filename='javascript/driver.js') }}"></script>
+</html>

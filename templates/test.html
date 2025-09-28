@@ -1,0 +1,47 @@
+<html>
+  <body>
+    <h1>This is test page.</h1>
+    <p id="testarea">test</p>
+    <p id="addText">ppp</p>
+    <select id="SQform" onchange="inputChange()" class="uk-select">
+      <option value="update">Update</option>
+      <option value="insert">Instert</option>
+    </select>
+    <input name="name" id="SQinput" type="text" class="uk-input">
+    
+
+	
+        <div id="users">
+          <input class="search" id="test" placeholder="Search">
+	</div>
+	<div>{{simple_html|safe}}</div>
+  </body>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/milligram.css') }}">
+
+  
+<script>
+function inputChange(){
+    if (textform[0].selected){
+        document.getElementById( "SQinput" ).value ="update trade set date=24000001 where rowid=1";
+        addarea.innerText="update";
+    } else if (textform[1].selected){
+        document.getElementById( "SQinput" ).value ="insert into trade values(24000001,'KHC','div',0.4,0.1,0.3,144.09,1,1)"  ;
+	addarea.innerText="insert";
+    }
+    testele.innerText="Changed";
+}
+
+let textform=document.getElementById("SQform");
+let textforms=textform.options;
+let testele=document.getElementById("addText");
+let addarea=document.getElementById("testarea");  
+  
+
+textform.onchange=inputChange;
+
+</script>  
+
+
+</html>
+
+

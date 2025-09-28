@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="UTF-8">
+    <title>US Stock</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+</head>
+<body>
+<div class="uk-container">
+    <div>
+      <font size="7">US Stock</font><br>
+      <font size="5"><a href="http://localhost:5000">Trade result</a> /<a href="http://localhost:5000/div_ditale">Prediction</a> / <a href="{{url_for('note_page')}}">Note</a></font>
+    </div>
+    {% set sum1=namespace(total=0) %}
+    {% set sum2=namespace(total=0) %}
+    {% for item in data %}
+    {% set sum1.total=sum1.total+item[3] %}
+    {% set sum2.total=sum2.total+item[2]|float*item[3] %}
+    {% endfor %}
+
+<div><h6>保有数:{{sum1.total}}株 / 時価総額:{{sum2.total|round(2)}}$</h6></div>
+
+    <div id="users">
+        <input class="search" placeholder="Search" />
+        <table id="tablesql"  class="uk-table uk-table-striped">
+            <thead>
+                <tr>
+                  <th>code</th>
+                    <th>株価</th>
+                  <th>保有</th>
+                  <th>時価</th>
+		  <th>取得額</th>
+		    
+                </tr>
+            </thead>
+            <tbody class="list">
+              {% for item in data %}
+	      {% set val1=item[2]|float *item[3] %}
+                <tr>
+                    <th class="dat"><a href="{{url_for('corp', cname=item[0])}}">{{item[0]}}</a></th>
+                    <th class="nm">{{item[2]}} </th>
+                    <th>{{item[3]}}</th>
+                    <th>{{val1|round(2)}}</th>
+		    <th>{{item[4]}}</th>
+                   
+                </tr>
+                {% endfor %}
+		<span></span>
+		
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/css/uikit.min.css') }}">
+<script src="{{ url_for('static', filename='javascript/driver.js') }}"></script>
+<script src="{{ url_for('static', filename='javascript/list.js') }}"></script>
+<script src="{{ url_for('static', filename='javascript/uikit/uikit.min.js') }}"></script>
+<script>
+    var options = {
+        valueNames: [ 'nm', 'dat', 'sell' ]
+    };
+
+  var userList = new List('users', options);
+  var tableElem=document.getElementById('tablesql');
+  var rowElem=tableElem.rows;
+  const len=rowElem.length;
+  var ww=[];
+  for (i=1; i < len; i++){
+      ww.push(Number(rowElem[i].cells[5].innerText));
+  }
+  
+  document.getElementById('goukei').innerText=len;
+
+  userList.on('searchComplete',function(a){
+  document.getElementById('goukei').innerText=userList.visibleItems.length;
+
+      var price=0;
+      for(i=0;i<len-1;i++){
+          if(userList.items[i].visible()){
+              price=price+ww[i];
+          }else{
+
+          }
+      }
+
+      document.getElementById('cost').innerText=price;
+
+
+  });
+
+</script>
+</html>

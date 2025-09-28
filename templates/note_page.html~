@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="UTF-8">
+    <title>Note page</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+</head>
+<body>
+<div class="uk-container">
+    <div>
+        <h1>Note Page / <a href="{{ url_for('index') }}">UL trade result</a></h1>
+    </div>
+    
+    <div class="uk-grid-small  uk-child-width-expand@s" uk-grid>
+     <div> 
+      <div class="uk-card uk-card-default uk-card-body">
+      <h3 class="uk-card-title">emacs</h3>     
+      <li>Alt + w : コピー</li>
+      <li>Ctrl + y : 貼り付け</li>
+      <li>Ctrl + g : コマンド中断</li>
+      </div>
+     </div>
+     <div>
+      <div class="uk-card uk-card-default uk-card-body">
+       <h3 class="uk-card-title">SQLite</h3>
+      </div>
+     </div>
+    </div>
+    
+
+</div>
+</body>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/css/uikit.min.css') }}">
+<script src="{{ url_for('static', filename='javascript/driver.js') }}"></script>
+<script src="{{ url_for('static', filename='javascript/list.js') }}"></script>
+<script src="{{ url_for('static', filename='javascript/uikit/uikit.min.js') }}"></script>
+<script>
+    var options = {
+        valueNames: [ 'nm', 'dat', 'sell' ]
+    };
+
+  var userList = new List('users', options);
+  var tableElem=document.getElementById('tablesql');
+  var rowElem=tableElem.rows;
+  const len=rowElem.length;
+  var ww=[];
+  for (i=1; i < len; i++){
+      ww.push(Number(rowElem[i].cells[5].innerText));
+  }
+  
+  document.getElementById('goukei').innerText=len;
+
+  userList.on('searchComplete',function(a){
+  document.getElementById('goukei').innerText=userList.visibleItems.length;
+
+      var price=0;
+      for(i=0;i<len-1;i++){
+          if(userList.items[i].visible()){
+              price=price+ww[i];
+          }else{
+
+          }
+      }
+
+      document.getElementById('cost').innerText=price;
+
+
+  });
+
+</script>
+</html>

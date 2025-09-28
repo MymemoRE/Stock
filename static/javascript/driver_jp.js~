@@ -1,0 +1,12 @@
+function inputChange(){
+    if (textform[0].selected){
+        document.getElementById( "SQinput" ).value ="update tradejp set date=23000001 where rowid=1";        
+    } else if (textform[1].selected){
+        document.getElementById( "SQinput" ).value ="insert into tradejp values(23000001,'KHC','sell',1000,1,100,99000)"  ;
+    }
+}
+
+let textform=document.getElementById("SQform");
+let textforms=textform.options;
+
+textform.onchange=inputChange;

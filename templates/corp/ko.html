@@ -1,0 +1,41 @@
+<div class="uk-grid-small  uk-child-width-expand@s" uk-grid>
+  <div>
+   <div class="uk-card uk-card-default uk-card-body">
+     <table id="tablesql"class="uk-table uk-table-small uk-table-striped">
+       <thead>
+	 <tr>
+	   <th>権利落</th>
+	   <th>支払</th>
+	 </tr>
+       </thead>
+       <tbody>
+	 <tr>
+	   <td>2023/09/14</td>
+	   <td>2023/10/02</td>
+	 </tr>
+	 <tr>
+	   <td>2023/06/15</td>
+	   <td>2023/07/03</td>
+	 </tr>
+	 <tr>
+	   <td>2023/03/16</td>
+	   <td>2023/04/03</td>
+	 </tr>
+	 {% for item in exdiv_data %}
+	 <tr>
+	   <td>{{item[1]}}</td>
+	   <td>{{item[2]}}</td>
+	 </tr>
+	 {% endfor %}
+       </tbody>
+     </table>
+     
+   </div>
+  </div>
+  <div>
+   <div class="uk-card uk-card-default uk-card-body">
+       <h3 class="uk-card-title">SQLite</h3>
+   </div>
+  </div>
+</div>
+<span><br></span>

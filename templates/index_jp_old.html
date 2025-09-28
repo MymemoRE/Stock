@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="UTF-8">
+    <title>Trade result</title>
+</head>
+<body>
+<div class="container">
+    <div>
+        <h1>JP Trade Result / <a href="http://localhost:5000">UL Trade Rresult</a></h1>
+    </div>
+    
+        <form action='/jp/result'>
+        <div class="row">
+	        <button class="button button-outline" type="submit" formmethod="POST">Run SQL</button>
+	        <select id="SQform" onchange="inputChange()" style="width: 200px;">
+                <option value="update">Update</option>
+                <option value="insert">Instert</option>
+		<option value="delete">Delete</option>
+            </select>
+            <input name="namejp" id="SQinput" type="text" style="width: 1000px;">
+        </div>
+    </form>
+	<div>Colmun 0.date 1.name 2.trade 3.price 4.num 5.commission 6.cost
+	</div>
+	<div>該当レコード数<a id="goukei"></a>件 /   収支計<span id="cost"></span>円  /  税率20.315%</div>
+    <div id="users">
+        <input class="search" placeholder="Search" />
+        <table id="tablesql">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>year/day</th>
+                    <th>Name</th>
+                    <th>Sell/Buy</th>
+                    <th>price</th>
+                    <th>cost</th>
+                </tr>
+            </thead>
+            <tbody class="list">
+                {% for item in data %}
+                <tr>
+                    <th>{{item[7]}}</th>
+                    <th class="dat">{{item[0]}}</th>
+                    <th class="nm">{{item[1]}}</th>
+                    <th class="sell">{{item[2]}}</th>
+                    <th>{{item[3]}}</th>
+                    <th>{{item[6]}}</th>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    </div>
+</body>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/milligram.css') }}">
+<script src="{{ url_for('static', filename='javascript/driver_jp.js') }}"></script>
+<script src="{{ url_for('static', filename='javascript/list.js') }}"></script>
+<script>
+    var options = {
+        valueNames: [ 'nm', 'dat', 'sell' ]
+    };
+
+  var userList = new List('users', options);
+  
+  var tableElem=document.getElementById('tablesql');
+  var rowElem=tableElem.rows; 
+  var i=0;
+  const len=rowElem.length;
+  var ww=[];
+  
+
+    for (i=1; i < len; i++){
+	ww.push(Number(rowElem[i].cells[5].innerText));
+    }
+  // document.getElementById('testarea').innerText=ww[1];
+ 
+  
+  userList.on('searchComplete',function(a){  
+      document.getElementById('goukei').innerText=userList.visibleItems.length;      
+
+      var price=0;
+      for(i=0;i<len-1;i++){
+	  if(userList.items[i].visible()){
+              price=price+ww[i];
+	  }else{
+         
+	  }
+      }
+      
+      document.getElementById('cost').innerText=price;
+      
+      
+  });
+
+</script>
+</html>
